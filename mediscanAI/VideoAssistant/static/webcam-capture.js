@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let mediaRecorder;
     let recordedChunks = [];
     let stream;
+    
 
     async function startWebcam() {
         
