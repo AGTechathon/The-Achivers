@@ -1,4 +1,3 @@
-y
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Play, Pause, SkipForward, SkipBack, Music } from 'lucide-react';
