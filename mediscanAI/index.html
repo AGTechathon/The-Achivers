@@ -41,6 +41,72 @@
         .section-heading img {
             margin-top: 10px;
         }
+
+         /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        /* Popup Styles */
+        .video-popup {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-content {
+            position: relative;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;  /* Adjust the width */
+            max-width: 1200px;  /* Maximum width */
+            height: 80%;  /* Adjust the height */
+            max-height: 800px;  /* Maximum height */
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 30px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Button Styles */
+        .video-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .video-btn:hover {
+            background-color: #218838;
+        }
+        
     </style>
 <body>
     
@@ -234,5 +300,442 @@
         <br>
         <br>
     </article>
+
+    <section class="section" id="schedule">
+       
+    </section>
+    
+    <div id="video-popup" class="video-popup">
+        <div class="popup-content">
+            <span class="close-btn">&times;</span>
+            <iframe id="video-frame" width="560" height="315" src="" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <section class="section" id="trainers">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3">
+                <div class="section-heading text-center">
+                    <h2>Fitness Device <em>Data Tracker</em></h2>
+                    <img src="assets/images/line-dec.png" alt="">
+                    <p>Get your health data from your Fitness Device.</p>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-4">
+                <div class="trainer-item">
+                    <div class="image-thumb">
+                        <img src="assets/images/google-fit (7).png" alt="">
+                    </div>
+                    <div class="down-content text-center">
+                        <span>Google-Fit</span>
+                        <h4>Get Health Data</h4>
+                        <!-- <p>.</p> -->
+                        <ul class="social-icons">
+                            <li><a href="http://192.168.80.68:8501/">See now</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<section class="section" id="trainers" style="background-color:rgba(4, 4, 4, 0.382);">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3">
+                <div class="section-heading">
+                    <h2>Self <em>Test</em></h2>
+                    <img src="assets/images/line-dec.png" alt="">
+                    <p>Mental Health Assessment</p>
+                </div>
+            </div>
+        
+        </div>
+        <article  id="tabs-4" style="display: flex; flex-direction: column; align-items: center-right; text-align: center; color: white;">
+            
+            <p style="color: white; ">Manage your emotional well-being through interactive activities and emotional tracking tools.</p>
+            <br> 
+            <div class="main-button">
+                <a href="../training-studio-1.0.0/mindfullness/assesment.html" style="display: inline-block; padding: 10px 20px; background-color: #ff6600; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">Get Started</a>
+            </div>
+        </article>
+        <br>
+        <br>
+    </div>
+</section> 
+
+            
+
+
+
+
+<section class="section" id="trainers">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3">
+                <div class="section-heading">
+                    <h2>Order <em>Medicines</em></h2>
+                    <img src="assets/images/line-dec.png" alt="">
+                    <p>Order Medicines from any site from below.</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="trainer-item">
+                    <div class="image-thumb">
+                        <img src="assets/images/first-trainer.jpg" alt="">
+                    </div>
+                    <div class="down-content">
+                        <span>Apollo Pharmacy</span>
+                        <h4>Quick Delivery</h4>
+                        <p>Wide range of medicines available.</p>
+                        <ul class="social-icons">
+                            <li><a href="https://www.apollopharmacy.in/?srsltid=AfmBOoraPsMAto20KH-f5h7SVW5Y96AY5YlaeVMc7_9Xyj-bxNH8BTyw">Order now</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="trainer-item">
+                    <div class="image-thumb">
+                        <img src="assets/images/second-trainer.jpg" alt="">
+                    </div>
+                    <div class="down-content">
+                        <span>PharmEasy</span>
+                        <h4>Quick Delivery</h4>
+                        <p>Wide range of medicines available.</p>
+                        <ul class="social-icons">
+                            <li><a href="https://pharmeasy.in/">Order now</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="trainer-item">
+                    <div class="image-thumb">
+                        <img src="assets/images/third-trainer.jpg" alt="">
+                    </div>
+                    <div class="down-content">
+                        <span>Med Plus Mart</span>
+                        <h4>Quick Delivery</h4>
+                        <p>Wide range of medicines available.</p>
+                        <ul class="social-icons">
+                            <li><a href="https://www.medplusmart.com/?srsltid=AfmBOoreF4247vfAKaTgGRNVjUGrNlRP_s5WKfDOIkEQtrVNB8EKAumj">Order now</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="section" id="trainers">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3">
+                <div class="section-heading">
+                    <h2>Consult <em>Doctors</em></h2>
+                    <img src="assets/images/line-dec.png" alt="">
+                    <p>Consult doctors online.</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="trainer-item">
+                    <div class="image-thumb">
+                        <img src="assets/images/doctor_consult.jpg" alt="">
+                    </div>
+                    <div class="down-content">
+                        <span>Apollo Doctors</span>
+                        <h4>Expert Consultations</h4>
+                        <p>Get consultations from top specialists in various fields.</p>
+                        <ul class="social-icons">
+                            <li><a href="https://www.apollodoctors.com/">Consult now</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="trainer-item">
+                    <div class="image-thumb">
+                        <img src="assets/images/doctor_consult(2).jpg" alt="">
+                    </div>
+                    <div class="down-content">
+                        <span>Doc Prime</span>
+                        <h4>Instant Consultations</h4>
+                        <p>Speak with certified doctors anytime and anywhere.</p>
+                        <ul class="social-icons">
+                            <li><a href="https://www.docprime.com/">Consult now</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="trainer-item">
+                    <div class="image-thumb">
+                        <img src="assets/images/doctor_consult.jpg" alt="">
+                    </div>
+                    <div class="down-content">
+                        <span>Healthians</span>
+                        <h4>Affordable Consultations</h4>
+                        <p>Consult experienced doctors with personalized health advice.</p>
+                        <ul class="social-icons">
+                            <li><a href="https://www.healthians.com/">Consult now</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<style>
+    .trainer-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin-bottom: 30px;
+        background-color: #f8f8f8;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .trainer-item:hover {
+        transform: translateY(-10px);
+    }
+
+    .image-thumb img {
+        width: 100%;
+        height: 200px;  /* Fixed height for images */
+        object-fit: cover; /* Ensures images don't stretch or distort */
+    }
+
+    .down-content {
+        padding: 20px;
+        background-color: #fff;
+        flex: 1;
+    }
+
+    .down-content span {
+        font-weight: bold;
+        color: #333;
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+
+    .down-content h4 {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    .down-content p {
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+
+    .social-icons {
+        list-style: none;
+        padding: 0;
+    }
+
+    .social-icons li a {
+        text-decoration: none;
+        color: #007bff;
+        font-weight: bold;
+    }
+
+    .social-icons li a:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+        .trainer-item {
+            margin-bottom: 20px;
+        }
+    }
+</style>
+
+<section class="section" id="trainers" style="background-color:rgba(0, 0, 0, 0.315);">
+    <div class="container animated-background">
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3">
+                <div class="section-heading">
+                    <h2>More <em>from us...</em></h2>
+                    <img src="assets/images/line-dec.png" alt="">
+                    <p>Explore them</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="trainer-item">
+                    <!-- <div class="image-thumb">
+                        <img src="assets/images/doctor_consult.jpg" alt="">
+                    </div> -->
+                    <div class="down-content">
+                        <span>Experts</span>
+                        <h4>Expert Consultations</h4>
+                        <p>Get consultations from top specialists in various fields.</p>
+                        <ul class="social-icons">
+                            <li><a href="../training-studio-1.0.0/mindfullness/expert.html">Meet Experts</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="trainer-item">
+                    <!-- <div class="image-thumb">
+                        <img src="assets/images/doctor_consult(2).jpg" alt="">
+                    </div> -->
+                    <div class="down-content">
+                        <span>Blogs</span>
+                        <h4>Explore Blogs</h4>
+                        <p>Mental heath Blogs</p>
+                        <!-- <p>------------</p> -->
+                        <ul class="social-icons">
+                            <li><a href="../training-studio-1.0.0/mindfullness/mental_health_blogs.html">See now</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="trainer-item">
+                    <!-- <div class="image-thumb">
+                        <img src="assets/images/doctor_consult.jpg" alt="">
+                    </div> -->
+                    <div class="down-content">
+                        <span>Resources</span>
+                        <h4>Resources Corner</h4>
+                        <p>Explore all resources.</p>
+                        <ul class="social-icons">
+                            <li><a href="../training-studio-1.0.0/mindfullness/playlist.html">See now</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- div class="col-lg-6 offset-lg-3"> -->
+                <div class="section-heading">
+                    <h2>Nearby <em>Hospitals</em></h2>
+                    <img src="assets/images/line-dec.png" alt="">
+                    <p>Know Your Nearby Hospitals From Map.</p>
+                </div>
+            </div>
+            <section class="section" id="contact-us">
+                <div class="container-fluid">
+                    <div class="row">
+                        <!-- Map Section -->
+                        <div class="col-lg-12 col-md-12 col-xs-12">
+                            <div id="map" class="map-container" style="height: 500px; width: 100%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+           
+            
+
+<style>
+    /* Section Styling */
+    #contact-us {
+        padding: 50px 0;
+        background-color: #f8f8f8;
+    }
+
+    .section-heading h2 {
+        font-size: 28px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .section-heading img {
+        margin-top: 10px;
+        margin-bottom: 40px;
+    }
+
+    /* Map Styling */
+    .map-container {
+        position: relative;
+        overflow: hidden;
+        height: 520px; /* Set a fixed height for the map */
+        width: 200%; /* Make sure it takes full width */
+        border-radius: 10px;
+    }
+
+    /* Contact Form Section */
+    .contact-form {
+        padding: 30px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .contact-info p {
+        font-size: 16px;
+        color: #777;
+        line-height: 1.6;
+        margin-top: 20px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        #contact-us .row {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .map-container {
+            height: 300px; /* Adjust the height for smaller screens */
+        }
+
+        .contact-form {
+            padding: 20px;
+            width: 100%;
+        }
+
+        .section-heading h2 {
+            font-size: 24px;
+        }
+    }
+</style>
+
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; 2025 PrimeMedic AI
+                    
+
+                Distributed by <a rel="nofollow" href="" class="tm-text-link" target="_blank">Syntax Samurai's</a>
+                
+                </p>
+                    
+                    
+                </div>
+            </div>
+        </div>
+    </footer>
+
+   
+
+
 </body>
 </html>
