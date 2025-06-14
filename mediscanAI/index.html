@@ -303,6 +303,94 @@
 
     <section class="section" id="schedule">
        
+
+<div class="container">
+            <div class="row">
+                <div class="col-lg-6 offset-lg-3">
+                    <div class="section-heading dark-bg">
+                        <h2><em>Health & Fitness</em></h2>
+                        <img src="assets/images/line-dec.png" alt="">
+                        <p>Smarter Fitness for a Healthier Tomorrow.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="filters">
+                        <ul class="schedule-filter">
+                            <li class="active" data-tsfilter="monday">Monday</li>
+                            <li data-tsfilter="tuesday">Tuesday</li>
+                            <li data-tsfilter="wednesday">Wednesday</li>
+                            <li data-tsfilter="thursday">Thursday</li>
+                            <li data-tsfilter="friday">Friday</li>
+                            <li data-tsfilter="saturday">Saturday</li>
+                            <li data-tsfilter="sunday">Sunday</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-10 offset-lg-1">
+                    <div class="schedule-table filtering">
+                        <table>
+                            <tbody>
+                                <!-- Fitness Class -->
+                                <tr>
+                                    <td class="day-time">Fitness Class</td>
+                                    <td class="monday ts-item show" data-tsmeta="monday">10:00AM - 11:30AM</td>
+                                    <td class="tuesday ts-item" data-tsmeta="tuesday">2:00PM - 3:30PM</td>
+                                    <td><button class="video-btn" data-video="https://www.youtube.com/watch?v=T41mYCmtWls">Watch Video</button></td>
+                                </tr>
+                                <!-- Muscle Training -->
+                                <tr>
+                                    <td class="day-time">Muscle Training</td>
+                                    <td class="friday ts-item" data-tsmeta="friday">10:00AM - 11:30AM</td>
+                                    <td class="thursday friday ts-item" data-tsmeta="thursday" data-tsmeta="friday">2:00PM - 3:30PM</td>
+                                    <td><button class="video-btn" data-video="https://www.youtube.com/watch?v=SS3WT91y48I">Watch Video</button></td>
+                                </tr>
+                                <!-- Body Building -->
+                                <tr>
+                                    <td class="day-time">Body Building</td>
+                                    <td class="tuesday ts-item" data-tsmeta="tuesday">10:00AM - 11:30AM</td>
+                                    <td class="monday ts-item show" data-tsmeta="monday">2:00PM - 3:30PM</td>
+                                    <td><button class="video-btn" data-video="https://www.youtube.com/watch?v=UIPvIYsjfpo">Watch Video</button></td>
+                                </tr>
+                                <!-- Yoga Training Class -->
+                                <tr>
+                                    <td class="day-time">Yoga Training Class</td>
+                                    <td class="wednesday ts-item" data-tsmeta="wednesday">10:00AM - 11:30AM</td>
+                                    <td class="friday ts-item" data-tsmeta="friday">2:00PM - 3:30PM</td>
+                                    <td><button class="video-btn" data-video="https://www.youtube.com/watch?v=CM43AZaRXNw">Watch Video</button></td>
+                                </tr>
+                                <!-- Advanced Training -->
+                                <tr>
+                                    <td class="day-time">Advanced Training</td>
+                                    <td class="thursday ts-item" data-tsmeta="thursday">10:00AM - 11:30AM</td>
+                                    <td class="wednesday ts-item" data-tsmeta="wednesday">2:00PM - 3:30PM</td>
+                                    <td><button class="video-btn" data-video="https://www.youtube.com/watch?v=950Hw7L7If8">Watch Video</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                
+            </div>
+            <article  id="tabs-4" style="display: flex; flex-direction: column; align-items: center-right; text-align: center; color: white;">
+                <br><br>
+                <!-- <img src="assets/images/training-image-04.jpg" alt="Fourth Training"> -->
+                <h4 >AI Emotional Well-being Tool   </h4>
+                
+                <br>
+                <p style="color: white; ">Manage your emotional well-being through interactive activities and emotional tracking tools.</p>
+                <br>
+                <div class="main-button">
+<!--                                       <a href="http://localhost:5173/" style="display: inline-block; padding: 10px 20px; background-color: #ff6600; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">Get Started</a> -->
+                    <a href="https://ai-emotional-well-being-tool-primemedic.onrender.com/" style="display: inline-block; padding: 10px 20px; background-color: #ff6600; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">Get Started</a>
+                </div>
+            </article>
+        </div>
+
+
+
     </section>
     
     <div id="video-popup" class="video-popup">
@@ -568,6 +656,70 @@
     }
 </style>
 
+
+<!-- jQuery -->
+    <script src="assets/js/jquery-2.1.0.min.js"></script>
+
+    <!-- Bootstrap -->
+    <script src="assets/js/popper.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+
+    <!-- Plugins -->
+    <script src="assets/js/scrollreveal.min.js"></script>
+    <script src="assets/js/waypoints.min.js"></script>
+    <script src="assets/js/jquery.counterup.min.js"></script>
+    <script src="assets/js/imgfix.min.js"></script> 
+    <script src="assets/js/mixitup.js"></script> 
+    <script src="assets/js/accordions.js"></script>
+    
+    <!-- Global Init -->
+    <script src="assets/js/custom.js"></script>
+    <script src="assets/js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get all video buttons
+            const videoButtons = document.querySelectorAll('.video-btn');
+            const videoPopup = document.getElementById('video-popup');
+            const videoFrame = document.getElementById('video-frame');
+            const closeBtn = document.querySelector('.close-btn');
+    
+            // Function to update the video URL
+            function updateVideoURL(videoURL) {
+                // Convert YouTube watch URL to embed format if needed
+                if (videoURL.includes('watch?v=')) {
+                    videoURL = videoURL.replace('watch?v=', 'embed/');
+                }
+                videoFrame.src = `${videoURL}?autoplay=1`; // Add autoplay for better UX
+            }
+    
+            // Show popup with video
+            videoButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const videoURL = button.getAttribute('data-video');
+                    if (videoURL) {
+                        updateVideoURL(videoURL);
+                        videoPopup.style.display = 'flex';
+                    }
+                });
+            });
+    
+            // Close the popup when clicking the close button
+            closeBtn.addEventListener('click', () => {
+                videoPopup.style.display = 'none';
+                videoFrame.src = ''; // Stop the video
+            });
+    
+            // Close the popup if clicked outside the content
+            videoPopup.addEventListener('click', (e) => {
+                if (e.target === videoPopup) {
+                    videoPopup.style.display = 'none';
+                    videoFrame.src = ''; // Stop the video
+                }
+            });
+        });
+    </script>
+
+
 <section class="section" id="trainers" style="background-color:rgba(0, 0, 0, 0.315);">
     <div class="container animated-background">
         <div class="row">
@@ -648,6 +800,99 @@
                     </div>
                 </div>
             </section>
+             <!-- Include Leaflet CSS and JS -->
+            <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+            <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+            
+            <script>
+                // Initialize the map
+                const map = L.map('map').setView([0, 0], 13); // Default view before user location is fetched
+            
+                // Add OpenStreetMap tiles
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '© OpenStreetMap contributors'
+                }).addTo(map);
+            
+                // Locate the user's position
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            const userLat = position.coords.latitude;
+                            const userLon = position.coords.longitude;
+                            const userLocation = [userLat, userLon];
+            
+                            // Update the map view to the user's location
+                            map.setView(userLocation, 14);
+            
+                            // Add a marker for the user's location
+                            L.marker(userLocation).addTo(map).bindPopup("You are here").openPopup();
+            
+                            // Fetch nearby hospitals
+                            fetchHospitals(userLocation);
+                        },
+                        (error) => {
+                            console.error("Geolocation error:", error);
+                            alert("Unable to retrieve your location. Please enable location services.");
+                        }
+                    );
+                } else {
+                    alert("Geolocation is not supported by your browser.");
+                }
+            
+                // Function to fetch nearby hospitals
+                function fetchHospitals([lat, lon]) {
+                    const searchRadius = 0.1; // Adjust the radius (in degrees, approx. 10-15 km)
+                    const nominatimUrl = `https://nominatim.openstreetmap.org/search?format=json&q=hospital&limit=50&bounded=1&viewbox=${lon - searchRadius},${lat + searchRadius},${lon + searchRadius},${lat - searchRadius}`;
+            
+                    fetch(nominatimUrl)
+                        .then((response) => response.json())
+                        .then((data) => {
+                            if (data.length === 0) {
+                                alert("No hospitals found nearby.");
+                            } else {
+                                data.forEach((place) => {
+                                    const hospitalLat = parseFloat(place.lat);
+                                    const hospitalLon = parseFloat(place.lon);
+            
+                                    // Calculate the distance to the hospital
+                                    const distance = haversineDistance([lat, lon], [hospitalLat, hospitalLon]);
+            
+                                    // Add markers for hospitals
+                                    L.marker([hospitalLat, hospitalLon])
+                                        .addTo(map)
+                                        .bindPopup(
+                                            `<b>${place.display_name}</b><br>Distance: ${distance.toFixed(2)} km`
+                                        );
+                                });
+                            }
+                        })
+                        .catch((error) => {
+                            console.error("Error fetching hospitals:", error);
+                            alert("Could not fetch hospital data.");
+                        });
+                }
+            
+                // Haversine formula to calculate the distance between two coordinates
+                function haversineDistance([lat1, lon1], [lat2, lon2]) {
+                    const R = 6371; // Radius of the Earth in km
+                    const dLat = degToRad(lat2 - lat1);
+                    const dLon = degToRad(lon2 - lon1);
+                    const a =
+                        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                        Math.cos(degToRad(lat1)) *
+                            Math.cos(degToRad(lat2)) *
+                            Math.sin(dLon / 2) *
+                            Math.sin(dLon / 2);
+                    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                    return R * c; // Distance in km
+                }
+            
+                // Helper function to convert degrees to radians
+                function degToRad(deg) {
+                    return deg * (Math.PI / 180);
+                }
+            </script>
             
            
             
@@ -721,10 +966,10 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <p>Copyright &copy; 2025 PrimeMedic AI
+                    <p>Copyright &copy; 2025 Mediscan AI
                     
 
-                Distributed by <a rel="nofollow" href="" class="tm-text-link" target="_blank">Syntax Samurai's</a>
+                Distributed by <a rel="nofollow" href="" class="tm-text-link" target="_blank">The Achievers</a>
                 
                 </p>
                     
