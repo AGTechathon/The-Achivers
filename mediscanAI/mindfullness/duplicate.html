@@ -1,4 +1,4 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -28,24 +28,26 @@
             </div>
         </div>
     </header>
-    </body>
+    <img src="homeimage.png" class="Homeimg" alt="">
 
+    <section class="card-container">
+        <div class="card card-yellow" id="yellowcard">
+            <img class="card-img" src="sleeptracking.jpg" alt="Consult Icon">
+            <button class="card-btn" onclick="window.location.href='login.html';">Track Your Sleep</button>
+        </div>
+        <div class="card card-purple">
+            <img class="card-img" src="mood-disorder.webp" alt="Consult Icon">
+            <button class="card-btn" onclick="window.location.href='login.html';">Track Your Mood</button>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer" id="footer">
+            <p class="copyright container">@ 2025 PrimeMedic AI | Privacy Policy | Terms of Use</p>
+        </div>
+    </footer>
     <script>
-function(){
-
-    
-    if(!window.chatbase||window.chatbase("getState")!=="initialized")
-    
-    {window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}
-    window.chatbase.q.push(arguments)};
-    window.chatbase=new Proxy(window.chatbase,{get(target,prop)
-        {if(prop==="q"){return target.q}return(...args)=>target(prop,...args)
-    
-    
-    
-    
-    }})
-}
-
+        (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="re530nSqm6beQkZJRZwYS";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
     </script>
-    </html>
+</body>
+</html>
