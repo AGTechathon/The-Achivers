@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webcam Video Capture</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .video-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .webcam-preview {
+            width: 100%;
+            max-width: 600px;
+            height: 400px;
+            background: #000;
+            border-radius: 15px;
+            margin: 0 auto 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #videoElement {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .no-camera {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(238, 90, 82, 0.3);
+        }
+
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #666;
+        }
+
+        .btn-secondary:hover {
+            background: #d0d0d0;
+            transform: translateY(-2px);
+        }
+
+        .btn-upload {
+            background: linear-gradient(135deg, #a8e6cf, #7fcdcd);
+            color: white;
+        }
+
+        .btn-upload:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(127, 205, 205, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .audio-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .recorded-content {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+        }
+
+        .recorded-video-container {
+            margin-bottom: 30px;
+        }
+
+        .recorded-video-preview {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            background: #000;
+        }
+
+        .recorded-audio-container {
+            margin-bottom: 20px;
+        }
+
+        .audio-controls {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        #contentStatus {
+            text-align: center;
+            color: #666;
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 20px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .status-message {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .status-info {
+            background: #cce7ff;
+            color: #004085;
+            border: 1px solid #b8daff;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        .footer a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .recording-indicator {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #ff4444;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: none;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .recording .recording-indicator {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .video-container {
+                padding: 20px;
+            }
+            
+            .webcam-preview {
+                height: 300px;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Webcam Video Capture</h1>
+        <p>Capture and upload videos for health diagnostics with AI-powered precision</p>
+    </div>
+
+    <div class="container">
+        <div class="video-container">
+            <h2 class="section-title">Webcam Preview</h2>
+            
+            <div class="webcam-preview" id="webcamPreview">
+                <video id="videoElement" autoplay muted playsinline></video>
+                <div class="no-camera" id="noCameraMessage" style="display: none;">
+                    Camera not accessible
+                </div>
+                <div class="recording-indicator">● REC</div>
+            </div>
+
+            <div class="controls">
+                <button id="startRecording" class="btn btn-primary">Start Recording</button>
+                <button id="stopRecording" class="btn btn-secondary" disabled>Stop Recording</button>
+                <button id="uploadVideo" class="btn btn-upload" disabled>Upload Video</button>
+            </div>
+
+            <div class="status-message" id="statusMessage" style="display: none;"></div>
+
+            <div class="audio-section">
+                <h2 class="section-title">Your Recorded Video</h2>
+                <div class="recorded-content">
+                    <div class="recorded-video-container" id="recordedVideoContainer" style="display: none;">
+                        <video id="recordedVideo" controls class="recorded-video-preview">
+                            Your browser does not support the video element.
+                        </video>
+                    </div>
+                    
+                    <div id="contentStatus">Webcam access granted. Ready to record.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        © 2024 PrimeMedic AI. All Rights Reserved. 
+        <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+    </div>
+
+    <script>
+        let mediaRecorder;
+        let recordedChunks = [];
+        let stream;
+
+        const videoElement = document.getElementById('videoElement');
+        const noCameraMessage = document.getElementById('noCameraMessage');
+        const startBtn = document.getElementById('startRecording');
+        const stopBtn = document.getElementById('stopRecording');
+        const uploadBtn = document.getElementById('uploadVideo');
+        const statusMessage = document.getElementById('statusMessage');
+        const recordedVideo = document.getElementById('recordedVideo');
+        const recordedVideoContainer = document.getElementById('recordedVideoContainer');
+        const contentStatus = document.getElementById('contentStatus');
+        const webcamPreview = document.getElementById('webcamPreview');
+
+        // Initialize camera
+        async function initCamera() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: true, 
+                    audio: true 
+                });
+                videoElement.srcObject = stream;
+                videoElement.style.display = 'block';
+                noCameraMessage.style.display = 'none';
+                showStatus('Camera initialized successfully!', 'success');
+            } catch (error) {
+                console.error('Error accessing camera:', error);
+                videoElement.style.display = 'none';
+                noCameraMessage.style.display = 'flex';
+                showStatus('Unable to access camera. Please check permissions.', 'error');
+            }
+        }
+
+        // Start recording
+        function startRecording() {
+            if (!stream) {
+                showStatus('Camera not available', 'error');
+                return;
+            }
+
+            recordedChunks = [];
+            mediaRecorder = new MediaRecorder(stream, {
+                mimeType: 'video/webm;codecs=vp9'
+            });
+
+            mediaRecorder.ondataavailable = (event) => {
+                if (event.data.size > 0) {
+                    recordedChunks.push(event.data);
+                }
+            };
+
+            mediaRecorder.onstop = () => {
+                const blob = new Blob(recordedChunks, { type: 'video/webm' });
+                const videoUrl = URL.createObjectURL(blob);
+                
+                // Show video preview
+                recordedVideo.src = videoUrl;
+                recordedVideoContainer.style.display = 'block';
+                
+                uploadBtn.disabled = false;
+                contentStatus.textContent = 'Recording completed successfully! Preview your video above.';
+                webcamPreview.classList.remove('recording');
+            };
+
+            mediaRecorder.start();
+            webcamPreview.classList.add('recording');
+            startBtn.disabled = true;
+            stopBtn.disabled = false;
+            uploadBtn.disabled = true;
+            showStatus('Recording started...', 'info');
+            contentStatus.textContent = 'Recording in progress... Click Stop Recording when done.';
+        }
+
+        // Stop recording
+        function stopRecording() {
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                mediaRecorder.stop();
+                startBtn.disabled = false;
+                stopBtn.disabled = true;
+                showStatus('Recording stopped successfully!', 'success');
+            }
+        }
+
+        // Upload video
+        async function uploadVideo() {
+            if (recordedChunks.length === 0) {
+                showStatus('No recording to upload', 'error');
+                return;
+            }
+
+            const blob = new Blob(recordedChunks, { type: 'video/webm' });
+            const formData = new FormData();
+            formData.append('video', blob, `recorded_video_${Date.now()}.webm`);
+
+            try {
+                showStatus('Uploading video...', 'info');
+                uploadBtn.disabled = true;
+
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    showStatus(`Video uploaded successfully! File: ${result.filename}`, 'success');
+                    contentStatus.textContent = 'Video uploaded successfully! You can record a new video or view your uploaded content.';
+                } else {
+                    showStatus(`Upload failed: ${result.error}`, 'error');
+                }
+            } catch (error) {
+                console.error('Upload error:', error);
+                showStatus('Upload failed. Please try again.', 'error');
+            } finally {
+                uploadBtn.disabled = false;
+            }
+        }
+
+        // Show status message
+        function showStatus(message, type) {
+            statusMessage.textContent = message;
+            statusMessage.className = `status-message status-${type}`;
+            statusMessage.style.display = 'block';
+            
+            setTimeout(() => {
+                statusMessage.style.display = 'none';
+            }, 5000);
+        }
+
+        // Event listeners
+        startBtn.addEventListener('click', startRecording);
+        stopBtn.addEventListener('click', stopRecording);
+        uploadBtn.addEventListener('click', uploadVideo);
+
+        // Initialize when page loads
+        window.addEventListener('load', initCamera);
+
+        // Cleanup when page unloads
+        window.addEventListener('beforeunload', () => {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+        });
+    </script>
+</body>
+</html>
