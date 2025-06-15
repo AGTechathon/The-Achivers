@@ -32,3 +32,8 @@ Yoga & Wellness Classes: Promotes holistic well-being with guided sessions. -Blo
 
 # web
 
+![alt text](<./mediscanAI/assets/images/web1.png>)
+
+# Mobile
+![alt text](<./mediscanAI/assets/images/mobile1.png>)
+ ![alt text](<./mediscanAI/assets/images/mobile1.png>)
