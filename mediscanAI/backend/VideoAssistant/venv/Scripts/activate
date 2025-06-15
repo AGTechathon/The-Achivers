@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\smutk\OneDrive\Documents\hackethon\prime-main\prime-main\training-studio-1.0.0\VideoAssistant\venv"
+VIRTUAL_ENV="C:\Users\smutk\OneDrive\Documents\hackethon\The-Achivers\mediscanAI\backend\VideoAssistant\venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

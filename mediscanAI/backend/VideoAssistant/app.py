@@ -1,186 +1,202 @@
-
-
-from flask import Flask, render_template, request, jsonify, url_for
 import os
+import cv2
+import numpy as np
+import subprocess
+from flask import Flask, request, jsonify, render_template
+from dotenv import load_dotenv
+from flask_cors import CORS
 from werkzeug.utils import secure_filename
-from datetime import datetime
-import uuid
+from query import chat
+from astrapy import DataAPIClient
+from groq import Groq
+from video_processor import process_webm_to_mp4
 
+# Load environment variables
+load_dotenv()
+
+# Flask app setup
 app = Flask(__name__)
-
-# Configuration
-UPLOAD_FOLDER = 'uploads'
-ALLOWED_EXTENSIONS = {'webm', 'mp4', 'avi', 'mov', 'mkv'}
-MAX_CONTENT_LENGTH = 100 * 1024 * 1024  # 100MB max file size
-
+UPLOAD_FOLDER = 'uploads/'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['MAX_CONTENT_LENGTH'] = MAX_CONTENT_LENGTH
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024 
+CORS(app)
 
-def allowed_file(filename):
-    """Check if file extension is allowed"""
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+# Constants
 
-def create_upload_folder():
-    """Create uploads folder if it doesn't exist"""
-    if not os.path.exists(UPLOAD_FOLDER):
-        os.makedirs(UPLOAD_FOLDER)
-        print(f"Created uploads folder: {UPLOAD_FOLDER}")
+ALLOWED_EXTENSIONS = {'webm', 'mp4', 'avi', 'mov'}
+MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16MB max file size
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-def get_next_video_number():
-    """Get the next video number based on existing files"""
-    if not os.path.exists(UPLOAD_FOLDER):
-        return 1
-    
-    existing_files = [f for f in os.listdir(UPLOAD_FOLDER) if f.startswith('video') and '.' in f]
-    video_numbers = []
-    
-    for filename in existing_files:
-        # Extract number from filename like "video1.webm", "video2.mp4", etc.
-        try:
-            base_name = filename.split('.')[0]  # Remove extension
-            if base_name.startswith('video'):
-                number_part = base_name.replace('video', '')
-                if number_part.isdigit():
-                    video_numbers.append(int(number_part))
-        except:
-            continue
-    
-    return max(video_numbers) + 1 if video_numbers else 1
+# Groq setup
+print("Groq Key Prefix:", os.environ.get("GROQ_API_KEY")[:8])
+client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
-def generate_meaningful_filename(original_filename):
-    """Generate meaningful filename like video1.webm, video2.mp4, etc."""
-    file_extension = os.path.splitext(original_filename)[1].lower()
-    video_number = get_next_video_number()
-    return f"video{video_number}{file_extension}"
+# Astra DB setup
+db_client = DataAPIClient(os.getenv('ASTRADB_TOKEN'))
+db = db_client.get_database_by_api_endpoint(
+    "https://b4c89db4-bdf7-47fa-9b9c-ce5380480864-us-east-2.apps.astra.datastax.com"
+)
+collection = db['prime_medic_ai']
 
+# Routes
 @app.route('/')
-def home():
-    """Render the home page"""
+def index():
     return render_template('home.html')
+
+@app.route('/chat')
+def home():
+    return render_template('index.html')
+
+# Allowed file check
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+# Check if video has audio
+def has_audio_stream(filepath):
+    try:
+        result = subprocess.run(
+            ["ffprobe", "-i", filepath, "-show_streams", "-select_streams", "a", "-loglevel", "error"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
+        )
+        return "codec_type=audio" in result.stdout
+    except Exception as e:
+        print("FFprobe error:", e)
+        return False
+
+# Upload video route
+# ...existing code...
+# ...existing code...
 
 @app.route('/upload', methods=['POST'])
 def upload_video():
-    """Handle video upload"""
     try:
-        # Check if file is present in request
         if 'video' not in request.files:
-            return jsonify({'error': 'No video file provided'}), 400
-        
-        file = request.files['video']
-        
-        # Check if file is selected
-        if file.filename == '':
-            return jsonify({'error': 'No file selected'}), 400
-        
-        # Check file extension
-        if not allowed_file(file.filename):
-            return jsonify({'error': f'File type not allowed. Allowed types: {", ".join(ALLOWED_EXTENSIONS)}'}), 400
-        
-        # Generate meaningful filename
-        filename = generate_meaningful_filename(file.filename)
-        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        
-        # Save the file
-        file.save(file_path)
-        
-        # Get file info
-        file_size = os.path.getsize(file_path)
-        file_size_mb = round(file_size / (1024 * 1024), 2)
-        
-        print(f"Video uploaded successfully:")
-        print(f"  - Original filename: {file.filename}")
-        print(f"  - Saved as: {filename}")
-        print(f"  - File size: {file_size_mb} MB")
-        print(f"  - Saved to: {file_path}")
-        
-        return jsonify({
-            'message': 'Video uploaded successfully',
-            'filename': filename,
-            'original_filename': file.filename,
-            'file_size_mb': file_size_mb,
-            'upload_time': datetime.now().isoformat()
-        }), 200
-        
-    except Exception as e:
-        print(f"Upload error: {str(e)}")
-        return jsonify({'error': f'Upload failed: {str(e)}'}), 500
+            return jsonify({'error': 'No video file uploaded', 'status': 'failed'}), 400
 
-@app.route('/uploads')
-def list_uploads():
-    """List all uploaded files"""
+        video_file = request.files['video']
+        if video_file.filename == '':
+            return jsonify({'error': 'No selected file', 'status': 'failed'}), 400
+
+        # Save original WebM file
+        input_path = os.path.join(UPLOAD_FOLDER, "recorded-video.webm")
+        video_file.save(input_path)
+        print(f"Saved video file: {input_path}")
+        success, result = process_webm_to_mp4(input_path)
+        if not success:
+            print(f"Video processing failed: {result}")
+            return jsonify({'error': result, 'status': 'failed'}), 500
+
+        # Continue with chat processing using the processed video
+        if not has_audio_stream(result):
+            print("No audio stream found. Using fallback audio.")
+            return jsonify({
+                'status': 'success',
+                'audio_url': '/static/default_response.mp3'
+            })
+
+        audio = chat(result, [])
+        if not audio:
+            audio = '/static/response_audio.mp3'
+
+        return jsonify({
+            'status': 'success',
+            'audio_url': audio
+        })
+
+    except Exception as e:
+        print(f"Error in upload_video: {str(e)}")
+        return jsonify({'status': 'error', 'error': str(e)}), 500
+        # Process video using FFmpeg    
+# ...existing code...
+# Chat response generator
+def get_response(message):
+    user_vd = collection.find(
+        sort={"$vectorize": message},
+        limit=2,
+        projection={"$vectorize": True},
+        include_similarity=True,
+    )
+
+    response = client.chat.completions.create(
+        messages=[
+            {
+                "role": "user",
+                "content": message,
+            },
+
+            {
+                'role': 'system',
+                'content': f'''You are an AI Doctor (You have no name) Who is Fully Professional in Medicine field
+                   and have the versatile knowledge of Medicine including the {user_vd},
+                   Also You are a genuine and friendly concerning Doctor who takes a great care and comfort,
+                   You will Provide the answers for the patients whatever they ask for and here is the user query {message},
+                   Ignore the asterisk symbols and not allowed to greet the user as patient, address them with friendly titles
+                   Now Answer it in the Concerning, Genuine and Jovial way of Speaking possible, You need to GIve the answer in the format given below
+                   "The Name of the Problem,
+                   The severity of the problem,
+                   The precautions to be taken,
+                   The medicines that need to be taken,
+                   The need and type of doctor to be consulted.",
+                   You have to give the response concise and strictly warning you don't use any kind of asterisks usage and pointing, numbering, the answer should only one be in
+                '''
+            }
+        ],
+        model="llama-3-70b-8192",  # ✅ Updated to supported model
+    )
+    return response.choices[0].message.content
+
+# Chat route
+@app.route('/send_message', methods=['POST'])
+def send_message():
     try:
-        files = []
-        if os.path.exists(UPLOAD_FOLDER):
-            for filename in os.listdir(UPLOAD_FOLDER):
-                file_path = os.path.join(UPLOAD_FOLDER, filename)
-                if os.path.isfile(file_path):
-                    file_size = os.path.getsize(file_path)
-                    file_size_mb = round(file_size / (1024 * 1024), 2)
-                    modification_time = datetime.fromtimestamp(os.path.getmtime(file_path))
-                    
-                    files.append({
-                        'filename': filename,
-                        'file_size_mb': file_size_mb,
-                        'upload_time': modification_time.isoformat()
-                    })
-        
-        files.sort(key=lambda x: x['upload_time'], reverse=True)  # Sort by newest first
-        
-        return jsonify({
-            'files': files,
-            'total_files': len(files)
-        }), 200
-        
+        if not request.is_json:
+            print("Error: Request is not JSON")
+            return jsonify({'error': 'Request must be JSON'}), 400
+
+        data = request.get_json()
+        if not data or 'message' not in data:
+            print("Error: No message in request")
+            return jsonify({'error': 'No message provided'}), 400
+
+        message = data['message']
+        print(f"Received message: {message}")
+
+        # Get response from Groq
+        response = get_response(message)
+        print(f"Generated response: {response}")
+
+        if not response:
+            print("Error: Empty response generated")
+            return jsonify({'error': 'Failed to generate response'}), 500
+
+        return jsonify({'response': response})
     except Exception as e:
-        return jsonify({'error': f'Failed to list files: {str(e)}'}), 500
+        print(f"Error in send_message: {str(e)}")
+        return jsonify({'error': str(e)}), 500
 
-@app.route('/health')
-def health_check():
-    """Health check endpoint"""
-    return jsonify({
-        'status': 'healthy',
-        'upload_folder': UPLOAD_FOLDER,
-        'upload_folder_exists': os.path.exists(UPLOAD_FOLDER),
-        'allowed_extensions': list(ALLOWED_EXTENSIONS),
-        'max_file_size_mb': app.config['MAX_CONTENT_LENGTH'] / (1024 * 1024)
-    }), 200
-
-@app.errorhandler(413)
-def file_too_large(error):
-    """Handle file too large error"""
-    return jsonify({
-        'error': 'File too large',
-        'max_size_mb': app.config['MAX_CONTENT_LENGTH'] / (1024 * 1024)
-    }), 413
-
-@app.errorhandler(404)
-def not_found(error):
-    """Handle 404 errors"""
-    return jsonify({'error': 'Endpoint not found'}), 404
-
-@app.errorhandler(500)
-def internal_error(error):
-    """Handle internal server errors"""
-    return jsonify({'error': 'Internal server error'}), 500
+def get_response(message):
+    try:
+        # Call Groq API
+        chat_response = client.chat.completions.create(
+            messages=[
+                {
+                    "role": "user",
+                    "content": message,
+                }
+            ],
+            model="llama-3-70b-8192",
+        )
+        return chat_response.choices[0].message.content
+    except Exception as e:
+        print(f"Error generating response: {str(e)}")
+        return None
+    
+# Run app
+def main():
+    app.run(host='0.0.0.0', port=5000, debug=True)
 
 if __name__ == '__main__':
-    # Create upload folder on startup
-    create_upload_folder()
-    
-    print("=" * 50)
-    print("🎥 Webcam Video Capture Server")
-    print("=" * 50)
-    print(f"Upload folder: {UPLOAD_FOLDER}")
-    print(f"Allowed file types: {', '.join(ALLOWED_EXTENSIONS)}")
-    print(f"Max file size: {app.config['MAX_CONTENT_LENGTH'] / (1024 * 1024):.0f} MB")
-    print("=" * 50)
-    print("Available endpoints:")
-    print("  GET  /          - Home page")
-    print("  POST /upload    - Upload video")
-    print("  GET  /uploads   - List uploaded files")
-    print("  GET  /health    - Health check")
-    print("=" * 50)
-    
-    # Run the Flask application
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    main()
+

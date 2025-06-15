@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=C:\Users\smutk\OneDrive\Documents\hackethon\prime-main\prime-main\training-studio-1.0.0\VideoAssistant\venv
+set VIRTUAL_ENV=C:\Users\smutk\OneDrive\Documents\hackethon\The-Achivers\mediscanAI\backend\VideoAssistant\venv
 
 if not defined PROMPT set PROMPT=$P$G
 

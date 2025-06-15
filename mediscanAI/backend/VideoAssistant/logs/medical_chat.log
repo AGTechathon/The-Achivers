@@ -1,0 +1,14 @@
+2025-06-15 08:14:35,189 - __main__ - INFO - Starting Medical AI Chatbot Server...
+2025-06-15 08:35:05,512 - __main__ - INFO - Starting Medical AI Chatbot Server...
+2025-06-15 08:38:52,231 - __main__ - INFO - Starting Medical AI Chatbot Server...
+2025-06-15 09:02:31,714 - __main__ - INFO - Starting Medical AI Chatbot Server...
+2025-06-15 09:02:45,477 - __main__ - INFO - Received chat request
+2025-06-15 09:02:45,495 - __main__ - INFO - Request data: {'message': 'hello'}
+2025-06-15 09:02:45,497 - __main__ - INFO - Processing message: hello
+2025-06-15 09:02:45,498 - __main__ - INFO - Processing message with chatbot
+2025-06-15 09:02:55,556 - __main__ - INFO - Chatbot result: {'response': 'Hello?', 'confidence': 0.7, 'predictions': {'conditions': [], 'recommendations': ['Please describe your symptoms in more detail for better assistance.'], 'confidence_scores': []}, 'medical_entities': {'symptoms': [], 'body_parts': [], 'conditions': []}, 'session_id': '9a334ee0-006d-4697-8bc7-61bc53c020e4', 'model_used': 'local'}
+2025-06-15 09:03:18,134 - __main__ - INFO - Received chat request
+2025-06-15 09:03:18,136 - __main__ - INFO - Request data: {'message': 'i am having high fever'}
+2025-06-15 09:03:18,136 - __main__ - INFO - Processing message: i am having high fever
+2025-06-15 09:03:18,136 - __main__ - INFO - Processing message with chatbot
+2025-06-15 09:03:20,113 - __main__ - INFO - Chatbot result: {'response': 'I have a fever, fever, fever.', 'confidence': 0.7, 'predictions': {'conditions': [], 'confidence_scores': [], 'recommendations': ['Monitor your symptoms closely', 'Stay hydrated and get adequate rest', 'Consult a healthcare professional if symptoms persist or worsen', 'Seek immediate medical attention if you experience severe symptoms']}, 'medical_entities': {'symptoms': ['fever'], 'body_parts': [], 'conditions': []}, 'session_id': '8b183e35-5b5c-4872-98ac-7f65865eba8c', 'model_used': 'local'}

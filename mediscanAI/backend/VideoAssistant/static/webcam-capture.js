@@ -1,7 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-   
-
- const webcamPreview = document.getElementById('webcamPreview');
+    const webcamPreview = document.getElementById('webcamPreview');
     const startRecordingBtn = document.getElementById('startRecording');
     const stopRecordingBtn = document.getElementById('stopRecording');
     const uploadVideoBtn = document.getElementById('uploadVideo');
@@ -11,8 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let mediaRecorder;
     let recordedChunks = [];
     let stream;
-    
- function checkBrowserCompatibility() {
+
+    // Comprehensive browser compatibility check
+    function checkBrowserCompatibility() {
         // Check for core APIs needed for webcam and recording
         const hasUserMedia = !!(
             navigator.mediaDevices && 
@@ -56,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return true;
     }
 
-    
+    // Request webcam access with extensive error handling
     async function startWebcam() {
         // First, check browser compatibility
         if (!checkBrowserCompatibility()) {
@@ -140,6 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             // Use the most compatible MIME type
             const mimeTypes = [
+                'video/mp4',
                 'video/webm;codecs=vp9,opus',
                 'video/webm;codecs=vp8,vorbis',
                 'video/webm'
@@ -163,6 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             };
 
+
             mediaRecorder.onstop = () => {
                 const blob = new Blob(recordedChunks, { 
                     type: supportedType 
@@ -181,11 +182,11 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Recording start error:', err);
             statusDiv.textContent = 'Could not start recording: ' + err.message;
         }
-  
     }
 
+    // Stop video recording
     function stopRecording() {
-       if (!mediaRecorder) {
+        if (!mediaRecorder) {
             statusDiv.textContent = 'No active recording to stop.';
             return;
         }
@@ -201,9 +202,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Upload video to server
     async function uploadVideo() {
-       
-
         if (recordedChunks.length === 0) {
             statusDiv.textContent = 'No recorded video to upload.';
             return;
@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         
         const formData = new FormData();
-        formData.append('video', blob, 'recorded_video.mp4');
+        formData.append('video', blob, 'recorded_video.webm');
 
         try {
             statusDiv.textContent = 'Uploading video...';
@@ -237,13 +237,13 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Upload error:', err);
             statusDiv.textContent = 'Upload failed: ' + err.message;
         }
-
-
     }
 
+    // Event Listeners
     startRecordingBtn.addEventListener('click', startRecording);
     stopRecordingBtn.addEventListener('click', stopRecording);
     uploadVideoBtn.addEventListener('click', uploadVideo);
 
+    // Initialize webcam on page load
     startWebcam();
 });
